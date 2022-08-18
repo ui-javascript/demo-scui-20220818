@@ -13,6 +13,7 @@ module.exports = defineConfig({
 	devServer: {
 		open: false, //运行后自动打开浏览器
 		port: process.env.VUE_APP_PORT, //挂载端口
+		allowedHosts: "all",
 		proxy: {
 			'/api': {
 				target: process.env.VUE_APP_API_BASEURL,
