@@ -17,7 +17,14 @@
 					</div>
 					<el-row :gutter="15">
 						<el-col v-for="(item, index) in grid.layout" v-bind:key="index" :md="item" :xs="24">
-							<draggable v-model="grid.copmsList[index]" animation="200" handle=".customize-overlay" group="people" item-key="com" dragClass="aaaaa" force-fallback fallbackOnBody class="draggable-box">
+							<draggable v-model="grid.copmsList[index]" animation="200"
+								handle=".customize-overlay"
+								group="people"
+								item-key="com"
+								dragClass="aaaaa"
+								force-fallback
+								fallbackOnBody
+								class="draggable-box">
 								<template #item="{ element }">
 									<div class="widgets-item">
 										<component :is="allComps[element]"></component>
@@ -33,6 +40,8 @@
 				</div>
 			</div>
 		</div>
+
+
 		<div v-if="customizing" class="widgets-aside">
 			<el-container>
 				<el-header>
@@ -55,11 +64,28 @@
 								<el-col :span="8"><span></span></el-col>
 							</el-row>
 						</div>
-						<div class="selectLayout-item item03" :class="{active:grid.layout.join(',')=='24'}" @click="setLayout([24])">
+						<div class="selectLayout-item item03" :class="{active:grid.layout.join(',')=='24,24,24'}" @click="setLayout([24,24,24])">
 							<el-row :gutter="2">
 								<el-col :span="24"><span></span></el-col>
 								<el-col :span="24"><span></span></el-col>
 								<el-col :span="24"><span></span></el-col>
+							</el-row>
+						</div>
+						<div class="selectLayout-item item04" :class="{active:grid.layout.join(',')=='8,8,8,8,8,8,8,8,8'}" @click="setLayout([8,8,8,8,8,8,8,8,8])">
+							<el-row :gutter="2">
+								<el-col :span="8"><span></span></el-col>
+								<el-col :span="8"><span></span></el-col>
+								<el-col :span="8"><span></span></el-col>
+							</el-row>
+								<el-row :gutter="2">
+								<el-col :span="8"><span></span></el-col>
+								<el-col :span="8"><span></span></el-col>
+								<el-col :span="8"><span></span></el-col>
+							</el-row>
+								<el-row :gutter="2">
+								<el-col :span="8"><span></span></el-col>
+								<el-col :span="8"><span></span></el-col>
+								<el-col :span="8"><span></span></el-col>
 							</el-row>
 						</div>
 					</div>
@@ -92,6 +118,7 @@
 <script>
 	import draggable from 'vuedraggable'
 	import allComps from './components'
+	import {fill, flattenDeep} from "lodash"
 
 	export default {
 		components: {
@@ -149,14 +176,14 @@
 					this.$refs.widgets.style.setProperty('transform', `scale(${scale})`)
 				})
 			},
+
 			//设置布局
 			setLayout(layout){
 				this.grid.layout = layout
-				if(layout.join(',')=='24'){
-					this.grid.copmsList[0] = [...this.grid.copmsList[0],...this.grid.copmsList[1],...this.grid.copmsList[2]]
-					this.grid.copmsList[1] = []
-					this.grid.copmsList[2] = []
-				}
+
+				this.grid.copmsList[0] = flattenDeep(this.grid.copmsList)
+				fill(this.grid.copmsList, [], 1)
+
 			},
 			//追加
 			push(item){
@@ -236,6 +263,7 @@
 	.selectLayout-item.item02 span {height:30px;}
 	.selectLayout-item.item02 .el-col:nth-child(1) span {height:14px;margin-bottom: 2px;}
 	.selectLayout-item.item03 span {height:14px;margin-bottom: 2px;}
+	.selectLayout-item.item04 span {height:14px;margin-bottom: 2px;}
 	.selectLayout-item:hover {border-color: var(--el-color-primary);}
 	.selectLayout-item.active {border-color: var(--el-color-primary);}
 	.selectLayout-item.active span {background: var(--el-color-primary);}
